@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SMS Campaign Assistance Form</title>
+  <style>
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 20px;
+    }
+    .form-container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+      border: 3px solid #3FAD2A;
+      border-radius: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #3FAD2A;
+    }
+    .question-block, .statement {
+      margin-bottom: 20px;
+    }
+    .question-block label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .info-icon {
+      display: inline-block;
+      background-color: #3FAD2A;
+      color: white;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      cursor: pointer;
+      margin-left: 8px;
+      position: relative;
+    }
+    .info-icon:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      background-color: #333;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 5px;
+      top: 30px;
+      left: 0;
+      width: 300px;
+      z-index: 100;
+      font-size: 13px;
+    }
+    .output-box {
+      background: #f9f9f9;
+      padding: 15px;
+      border-left: 5px solid #3FAD2A;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.1em;
+      white-space: pre-line;
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .btn-next, .btn-back {
+      padding: 10px 20px;
+      margin: 10px 10px 0 0;
+      background-color: #3FAD2A;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-next:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .btn-back {
+      background-color: #777;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .toggle-button {
+      padding: 10px 20px;
+      font-size: 1.0em;
+      border-radius: 8px;
+      background-color: #3FAD2A;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .toggle-content {
+      background: #e8f5e9; 
+      border: 1px solid #3FAD2A;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 10px;
+    }    
+    hr {
+      border: none;
+      border-top: 4px solid #3FAD2A;
+      margin: 32px auto;
+      width: 80%;
+      box-shadow: 0 2px 8px rgba(63,173,42,0.15);
+      display: block;
+    }
+    .arrow {
+      margin-left: 10px;
+      transition: transform 0.3s;
+    }
+    .arrow.open {
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>SMS Campaign Assistance Form</h2>
+
+    <!-- STEP 1 -->
+    <div class="section" id="step1">
+      <div class="statement">Let's review your brand and website setup:</div>
+      <div class="question-block">
+        <label>Q: Do you have at least 1 Plus / Pro user on the account?</label>
+        <select id="hasPlus" onchange="validateStep1()">
+          <option value="">-- Select --</option>
+          <option value="yes">Yes</option>
+          <option value="no">No / Unsure</option>
+        </select>
+        <div id="plusResponse" class="statement hidden">
+          This can be checked by logging in to 
+          <a href="https://my.phone.com/" target="_blank" rel="noopener noreferrer">https://my.phone.com/</a>
+          and navigating to the "Admin" section and navigating to the "Users" tab.<br><br>
+          If you do not have a "users" tab on your page, you are more than likely on a Grandfathered plan and may proceed to the next Question and mark this question as Yes.<br><br>
+          If you do have the "User" tab, you will be able to see your plan to the right of your name. If your plan is on Base, we recommend upgrading at least 1 user to Plus or Pro to proceed with the campaign form, as you will not have access to the Outbound SMS functionality.<br><br>
+          Please view pricing and plans here:
+          <a href="https://www.phone.com/pricing/" target="_blank" rel="noopener noreferrer">https://www.phone.com/pricing/</a>
+        </div>
+      </div>
+      <div class="question-block">
+        <label>Q: Has your brand been approved?</label>
+        <select id="brandApproved" onchange="validateStep1()">
+          <option value="">-- Select --</option>
+          <option value="yes">Yes</option>
+          <option value="no">No / Unsure</option>
+        </select>
+        <div class="statement hidden" id="brandExplain">
+          This can be checked by logging in to 
+          <a href="https://my.phone.com/" target="_blank" rel="noopener noreferrer">https://my.phone.com/</a>
+          and navigating to the "Admin" section then SMS Registration.<br><br>
+          If you do not have a brand you can Click "+Add new brand" and fill the brand form. 
+          <strong>Federal business ID (EIN for US, Business # for CA) will be required at the time of filling this form.</strong><br><br>
+          For more information on how to create a brand, please refer to the
+          <a href="https://support.phone.com/text-messaging-registration-field-by-field-guide#campaign" target="_blank" rel="noopener noreferrer">Field by Field Guide</a>.
+        </div>
+      </div>
+      <div class="question-block">
+        <label>
+          Q: Does your brand have a website / Web Presence attached?
+          <span class="info-icon" data-tooltip="What is online presence? This can be a Facebook, LinkedIn page, or a site that is connected to your company.">i</span>
+        </label>
+        <select id="hasWebsite" onchange="validateStep1()">
+          <option value="">-- Select --</option>
+          <option value="yes">Yes</option>
+          <option value="no">No / Unsure</option>
+        </select>
+        <div class="statement hidden" id="noWebsiteSupport">
+          This can be checked by logging in to <a href="https://my.phone.com/" target="_blank" rel="noopener noreferrer">https://my.phone.com/</a> and navigating to the "Admin" section then SMS Registration.<br><br>
+          Click the 3 Dots to the right of the brand and select "EDIT BRAND". If your website is not appearing on the form, contact support at 1.800.998.7087 to update your brand.<br>
+        </div>
+      </div>
+      <div id="errorMsg" class="error hidden">⚠ Please ensure all requirements are met before proceeding. You cannot continue until all answers are "Yes".</div>
+      <button class="btn-next" id="step1NextBtn" onclick="goToStep2()" disabled>Next →</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="section hidden" id="step2">
+      <div class="statement">
+        Let's generate your Privacy Policy and Terms of Service with the required keywords.
+      </div>
+      <div class="question-block">
+        <label>Q: What is your Brand Name?
+          <span class="info-icon" data-tooltip="Use the same Brand name matching what is provided on your Brand form">i</span>
+        </label>
+        <input type="text" id="brandName" oninput="updateOutput(); validateStep2();" required>
+      </div>
+      <div class="question-block">
+        <label>Q: What is your OPT-IN Keyword?
+          <span class="info-icon" data-tooltip="These are the words a contact can text to opt-in. Industry standards are START or SUBSCRIBE.">i</span>
+        </label>
+        <input type="text" id="optIn" oninput="this.value = this.value.toUpperCase(); updateOutput(); validateStep2();" required>
+      </div>
+      <div class="question-block">
+        <label>Q: What is your OPT-OUT Keyword?
+          <span class="info-icon" data-tooltip="Words a contact can text to opt-out. Industry standards are: STOP, CANCEL, UNSUBSCRIBE.">i</span>
+        </label>
+        <input type="text" id="optOut" oninput="this.value = this.value.toUpperCase(); updateOutput(); validateStep2();" required>
+      </div>
+      <div class="question-block">
+        <label>Q: What is your HELP Keyword?
+          <span class="info-icon" data-tooltip="Words a contact can text to get help, like HELP or INFO.">i</span>
+        </label>
+        <input type="text" id="helpKeyword" oninput="this.value = this.value.toUpperCase(); updateOutput(); validateStep2();" required>
+      </div>
+      <div class="question-block">
+        <label>Q: What type of messages will you send?
+          <span class="info-icon" data-tooltip="E.g., Marketing, Account Notifications, Conversational / Customer Care.">i</span>
+        </label>
+        <div class="options" id="messageTypeOptions">      
+          <label><input type="checkbox" value="Marketing" onchange="updateMessageTypes(); validateStep2();"> Marketing</label>
+          <label><input type="checkbox" value="Account Notifications" onchange="updateMessageTypes(); validateStep2();"> Account Notifications</label>
+          <label><input type="checkbox" value="Conversational / Customer Care" onchange="updateMessageTypes(); validateStep2();"> Conversational / Customer Care</label>
+        </div>
+        <div class="output-box" id="messageTypesOutput" style="margin-top:8px;">
+          Types of messages you will send:
+        </div>
+        <input type="text" id="messageType" class="hidden" required>
+      </div>
+      
+      <div class="statement">Generated Privacy Policy and Messaging Terms and services:</div>
+      <div class="output-box" id="policyOutput"></div>
+      
+      <div class="toggle-container">
+        <br>
+        <button class="toggle-button" onclick="toggleMessages()">
+          <span style="font-size: 1.1em; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 600;">
+            Unsure what kind of messages you are going to send?
+          </span>
+          <span id="arrow" class="arrow">&#9654;</span>
+        </button>
+      </div>
+      <div id="messageInfo" class="toggle-content" style="display:none;">
+        <div class="message-example">
+          <strong>Conversational messages / Customer Care:</strong>
+          <div class="message-text">
+            <br>
+            ***Conversational / Customer Care messages are two-way interactions where you and your customers can exchange information freely. These messages are not strictly promotional or transactional.***<br><br>
+            <i><strong>Example:</strong></i> <br><br>
+            Hi, this is Bob from Bob's Pools,<br>
+            Just wanted to follow up with you in regards of services that we have performed a few weeks ago. Let us know if you have any questions or need further assistance.<br>
+            Let us know if you need anything else.
+            To unsubscribe from text messages, reply with STOP. <br><br>
+          </div>
+          <strong>Account notifications:</strong>
+          <div class="message-text">
+            <br>
+            Hi, Fred. Just wanted to update you regarding [Insert issue] — information has been updated to your account.<br>
+            To unsubscribe from text messages, reply with STOP.<br><br>
+          </div>
+          <strong>Marketing:</strong>
+          <div class="message-text">
+            <br>
+            Great news from Beautify Salon! We are offering 20% off highlights for the next 30 days.<br>
+            Text "APPT", and we'll contact you to set your appointment.<br>
+            To unsubscribe from text messages, reply with STOP.<br><br>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <button class="toggle-button" type="button" onclick="toggleNoWebsiteInstructions()">
+          <strong>Don't have a website but have an online presence (Company Facebook/LinkedIn) instead?</strong>
+          <span id="noWebsiteArrow" class="arrow">&#9654;</span>
+        </button>
+        <div id="noWebsiteInstructions" class="toggle-content" style="display:none;">
+          <ol>
+            <li>
+              You will need a way to make a document accessible but not editable to the public. 
+              <strong>Google Docs</strong> is a common method for this.
+            </li>
+            <br>
+            <li>
+              Copy the <strong>Generated Privacy Policy and Messaging Terms and services</strong> above into the document and title it:<br>
+              <code id="docTitleOutput"></code>
+            </li>
+            <br>
+            <li>
+              Make sure to set the sharing settings to "Anyone with the link can view".
+            </li>
+            <br>
+            <li>
+              Apply the new document link to your online web presence (e.g., Facebook/LinkedIn page) so it is accessible to the public.
+            </li>
+          </ol>
+          <em>Make sure to set the sharing settings to "Anyone with the link can view".</em>
+          <br>
+        </div>
+        <br>
+        <label>
+          <input type="checkbox" id="policyConfirm" onchange="validateStep2()" style="margin-right: 10px;">
+          I have copied or added the generated Privacy Policy and Terms of Service to my website / Public document.
+        </label>
+        <br><strong>Link to Privacy policy and terms of services will be required later</strong>
+      </div>
+      
+      <button class="btn-back" onclick="goToStep1()">← Back</button>
+      <button class="btn-next" id="step2NextBtn" onclick="goToStep3()" disabled>Next →</button>
+      <div id="step2ErrorMsg" class="error hidden">⚠ Please fill out all required fields and select at least one message type to continue.</div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="section hidden" id="step3">
+      <div class="statement">
+        Here we will be determining the method of opt in. Depending on which opt in method is selected may result in additional changes to your website and proper information will be provided.<br>
+        <br>
+        Here are the most common methods of opt-in:
+        <br><br><strong>Please look through the options and see what applies closest to your needs. 
+        Please make sure the appropriate updates are made before proceeding.</strong>
+      </div>
+      <div class="question-block">
+        <label for="optInMethod"><strong>Different types of opt-in method:</strong></label>
+        <select id="optInMethod" onchange="showOptInDetails()">
+          <option value="">-- Select --</option>
+          <option value="website">Website/Online opt-in</option>
+          <option value="keyword">Keyword Opt-in</option>
+          <option value="consumer">Consumer-Initiated Messaging</option>
+          <option value="verbal">Verbal opt-in</option>
+          <option value="document">Document opt-in</option>
+        </select>
+      </div>
+      <div id="optInDetails" class="output-box hidden"></div>
+      <button class="btn-back" onclick="goToStep2FromStep3()">← Back</button>
+      <button class="btn-next" id="step3NextBtn" onclick="goToStep4()" disabled>Next →</button>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="section hidden" id="step4">
+      <div class="statement">
+        <strong>Step 4: Final Review & Submission</strong><br>
+        Please review all your information and confirm everything is correct before submitting your SMS campaign request.
+      </div>
+      <div class="question-block">
+        <label>Q: Please provide the link to your Privacy Policy</label>
+        <input type="text" id="finalPolicyLink" placeholder="https://yourwebsite.com/privacy-policy" oninput="updateStep4Info()" style="margin-bottom:10px;">
+      </div>
+      <div class="question-block">
+        <label>Q: Please provide the link to your Terms of Service</label>
+        <input type="text" id="finalTermsLink" placeholder="https://yourwebsite.com/terms-of-service" oninput="updateStep4Info()" style="margin-bottom:10px;">
+      </div>
+      <div class="question-block">
+        <label>Q: What is your Link to your Contact us page</label>
+        <input type="text" id="contactUsLink" placeholder="https://yourwebsite.com/contact" oninput="updateStep4Info()" style="margin-bottom:10px;">
+      </div>
+      
+      <div class="output-box" id="finalReviewBox">
+        Please fill in the fields above for the generation of your SMS campaign summary.<br>
+      </div>
+
+      <div id="campaignSummarySection" style="display: none;">
+        <hr>
+        <div class="statement" style="text-align:center; font-size:1.25em;"><strong>Section 1: How are you using SMS?</strong></div>
+        <div class="question-block">
+          <label>Campaign Name:</label>
+          <div class="output-box" id="campaignNameBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Campaign Description:</label>
+          <div class="output-box" id="campaignDescBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Please select message types on the right. If other use cases apply, select those options as well.
+            <br>Note: these options are for OUTBOUND SMS.</label>
+          <div class="output-box" id="campaignMsgTypesBox"></div>
+        </div>
+        <div style="text-align: center; font-weight: bold; margin: 16px 0;">
+          Once this section is complete, hit Next on the bottom right to continue.
+        </div>
+        <hr>
+        <div class="statement" style="text-align:center; font-size:1.25em;"><strong>Section 2: Message Settings</strong></div>
+        <div class="question-block">
+          <label>Opt-in keyword(s):</label>
+          <div class="output-box" id="campaignOptInBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Opt-in message:</label>
+          <div class="output-box" id="campaignOptInMsgBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Opt-out keyword(s):</label>
+          <div class="output-box" id="campaignOptOutBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Opt-out message:</label>
+          <div class="output-box" id="campaignOptOutMsgBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Help keyword:</label>
+          <div class="output-box" id="campaignHelpBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Help message:</label>
+          <div class="output-box" id="campaignHelpMsgBox"></div>
+        </div>
+        <hr>
+        <div class="question-block">
+          <label for="summaryOptInMethod"><strong>Choose Opt-in Method (for Message Flow):</strong></label>
+          <select id="summaryOptInMethod" onchange="showSummaryOptInOutput()">
+            <option value="">-- Select --</option>
+            <option value="website">Website/Online opt-in</option>
+            <option value="keyword">Keyword Opt-in</option>
+            <option value="initiated">Initiated Messaging</option>
+            <option value="verbal">Verbal opt-in</option>
+            <option value="document">Document opt-in</option>
+          </select>
+        </div>
+        <div class="output-box" id="summaryOptInOutput"></div>
+        <hr>
+        <div class="statement" style="text-align:center; font-size:1.25em;"><strong>Section 4: Sample Messages</strong></div>
+        <div class="question-block">
+          <label><strong>Select the type(s) of messages you are going to send 
+            <br> Note: Please update the wording to reflect the type of messages you are going to send:</strong></label>
+          <div id="step4MessageTypeOptions">
+            <label><input type="checkbox" value="Marketing" onchange="updateStep4SampleMessages()"> Marketing</label>
+            <label><input type="checkbox" value="Account Notifications" onchange="updateStep4SampleMessages()"> Account Notifications</label>
+            <label><input type="checkbox" value="Conversational / Customer Care" onchange="updateStep4SampleMessages()"> Conversational / Customer Care</label>
+          </div>
+        </div>
+        <div class="question-block">
+          <label><strong>Sample Message(s) Based on Your Selection:</strong></label>
+          <div class="output-box" id="sampleMessagesBox"></div>
+        </div>
+        <script>
+          function getStep4SampleMessages() {
+            const brand = document.getElementById("brandName").value || "[Brand name]";
+            const optOut = document.getElementById("optOut").value || "[opt out keyword]";
+            let namePlaceholder = "(NAME)";
+            // Get checked types from step 4 checkboxes
+            const checkboxes = document.querySelectorAll('#step4MessageTypeOptions input[type="checkbox"]');
+            const selectedTypes = [];
+            checkboxes.forEach(cb => { if (cb.checked) selectedTypes.push(cb.value); });
+            let messages = [];
+            if (selectedTypes.includes("Marketing")) {
+              messages.push(
+            `Marketing:\nHello this is ${namePlaceholder} from ${brand}, We are offering 20% off your next order for the next 30 days!\n To unsubscribe from text messages, reply with ${optOut}.\n`
+              );
+            }
+            if (selectedTypes.includes("Conversational / Customer Care")) {
+              messages.push(
+            `Conversational / Customer Care:\nHello this is ${namePlaceholder} from ${brand},\nIt was nice speaking with you today. If you have further questions feel free to reach out via SMS or give this number a call.\nYou are able to reply ${optOut} anytime to unsubscribe.\n`
+              );
+            }
+            if (selectedTypes.includes("Account Notifications")) {
+              messages.push(
+            `Account Notifications:\nHello this is ${namePlaceholder} from ${brand},\nJust a reminder that you have a billing update on your account. Please visit our website in order to view the information.\nYou are able to reply ${optOut} anytime to unsubscribe.\n`
+              );
+            }
+            if (messages.length === 0) {
+              messages.push("No message type selected.");
+            }
+            return messages.join("\n\n");
+          }
+
+          function updateStep4SampleMessages() {
+            document.getElementById("sampleMessagesBox").innerText = getStep4SampleMessages();
+          }
+
+          // Update sample messages when entering Step 4 or when relevant fields change
+          document.getElementById("brandName").addEventListener("input", updateStep4SampleMessages);
+          document.getElementById("optOut").addEventListener("input", updateStep4SampleMessages);
+
+          // Also update when entering Step 4
+          const origUpdateStep4Info = updateStep4Info;
+          updateStep4Info = function() {
+            origUpdateStep4Info();
+            updateStep4SampleMessages();
+          };
+        </script>
+      </div>
+      
+      <button class="btn-back" onclick="goToStep3FromStep4()">← Back</button>
+      <button class="btn-next" id="step4SubmitBtn" onclick="submitCampaign()" disabled>DONE!</button>
+    </div>
+  </div>
+
+  <script>
+    // Form state management
+    const formState = {
+      currentStep: 1,
+      data: {}
+    };
+
+    // Step 1 Functions
+    function validateStep1() {
+      const hasPlus = document.getElementById('hasPlus').value;
+      const brandApproved = document.getElementById('brandApproved').value;
+      const hasWebsite = document.getElementById('hasWebsite').value;
+      const errorMsg = document.getElementById('errorMsg');
+      const nextBtn = document.getElementById('step1NextBtn');
+
+      // Show/hide conditional content
+      document.getElementById('plusResponse').classList.toggle('hidden', hasPlus !== 'no');
+      document.getElementById('brandExplain').classList.toggle('hidden', brandApproved !== 'no');
+      document.getElementById('noWebsiteSupport').classList.toggle('hidden', hasWebsite !== 'no');
+
+      // Validation logic
+      if (hasPlus === "yes" && brandApproved === "yes" && hasWebsite === "yes") {
+        errorMsg.classList.add('hidden');
+        nextBtn.disabled = false;
+      } else {
+        if (hasPlus !== "" || brandApproved !== "" || hasWebsite !== "") {
+          errorMsg.classList.remove('hidden');
+        }
+        nextBtn.disabled = true;
+      }
+    }
+
+    // Navigation Functions
+    function goToStep1() {
+      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("step3").classList.add("hidden");
+      document.getElementById("step4").classList.add("hidden");
+      document.getElementById("step1").classList.remove("hidden");
+      formState.currentStep = 1;
+    }
+
+    function goToStep2() {
+      if (!document.getElementById('step1NextBtn').disabled) {
+        document.getElementById("step1").classList.add("hidden");
+        document.getElementById("step3").classList.add("hidden");
+        document.getElementById("step4").classList.add("hidden");
+        document.getElementById("step2").classList.remove("hidden");
+        formState.currentStep = 2;
+        updateOutput();
+        validateStep2();
+      }
+    }
+
+    function goToStep2FromStep3() {
+      document.getElementById("step3").classList.add("hidden");
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step4").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+      formState.currentStep = 2;
+      // Reset step 3 selections
+      document.getElementById('optInMethod').value = "";
+      document.getElementById('optInDetails').classList.add('hidden');
+      document.getElementById('step3NextBtn').disabled = true;
+    }
+
+    function goToStep3() {
+      if (!document.getElementById('step2NextBtn').disabled) {
+        document.getElementById("step1").classList.add("hidden");
+        document.getElementById("step2").classList.add("hidden");
+        document.getElementById("step4").classList.add("hidden");
+        document.getElementById("step3").classList.remove("hidden");
+        formState.currentStep = 3;
+      }
+    }
+
+    function goToStep3FromStep4() {
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("step4").classList.add("hidden");
+      document.getElementById("step3").classList.remove("hidden");
+      formState.currentStep = 3;
+    }
+
+    function goToStep4() {
+      if (!document.getElementById('step3NextBtn').disabled) {
+        document.getElementById("step1").classList.add("hidden");
+        document.getElementById("step2").classList.add("hidden");
+        document.getElementById("step3").classList.add("hidden");
+        document.getElementById("step4").classList.remove("hidden");
+        formState.currentStep = 4;
+        updateStep4Info();
+      }
+    }
+
+    // Step 2 Functions
+    function updateMessageTypes() {
+      const checkboxes = document.querySelectorAll('#messageTypeOptions input[type="checkbox"]');
+      const selected = [];
+      checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(cb.value);
+      });
+      const output = document.getElementById('messageTypesOutput');
+      if (selected.length > 0) {
+        output.textContent = 'Types of messages you will send: ' + selected.join(', ');
+      } else {
+        output.textContent = 'Types of messages you will send:';
+      }
+      document.getElementById('messageType').value = selected.join(', ');
+      updateOutput();
+    }
+
+    function updateOutput() {
+      const brand = document.getElementById("brandName").value || "[BRANDNAME]";
+      const optIn = document.getElementById("optIn").value || "[OPTIN]";
+      const optOut = document.getElementById("optOut").value || "[OPTOUT]";
+      const help = document.getElementById("helpKeyword").value || "[HELP]";
+      const msgType = document.getElementById("messageType").value || "[TYPEOFMESSAGE]";
+
+      const policy = `Privacy Policy for ${brand}:
+"No mobile information will be shared with third parties/affiliates for marketing/promotional purposes. All the above categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties. Message frequency varies. Message and data rates may apply."
+
+Terms of Service for ${brand}:
+"You agree to receive ${msgType} messages from ${brand}. Message frequency varies. Message and data rates may apply. For help, reply ${help}. You can opt out at any time by replying ${optOut}."`;
+
+      document.getElementById("policyOutput").innerText = policy;
+    }
+
+    function validateStep2() {
+      const brandName = document.getElementById('brandName').value.trim();
+      const optIn = document.getElementById('optIn').value.trim();
+      const optOut = document.getElementById('optOut').value.trim();
+      const helpKeyword = document.getElementById('helpKeyword').value.trim();
+      const messageType = document.getElementById('messageType').value.trim();
+      const policyConfirm = document.getElementById('policyConfirm').checked;
+      const nextBtn = document.getElementById('step2NextBtn');
+      const errorMsg = document.getElementById('step2ErrorMsg');
+
+      const hasMessageType = messageType.length > 0;
+
+      if (brandName && optIn && optOut && helpKeyword && hasMessageType && policyConfirm) {
+        nextBtn.disabled = false;
+        errorMsg.classList.add('hidden');
+      } else {
+        nextBtn.disabled = true;
+        errorMsg.classList.remove('hidden');
+      }
+    }
+
+    function toggleMessages() {
+      const content = document.getElementById('messageInfo');
+      const arrow = document.getElementById('arrow');
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+        arrow.classList.remove('open');
+      } else {
+        content.style.display = 'block';
+        arrow.classList.add('open');
+      }
+    }
+
+    function toggleNoWebsiteInstructions() {
+      const content = document.getElementById('noWebsiteInstructions');
+      const arrow = document.getElementById('noWebsiteArrow');
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+        arrow.classList.remove('open');
+      } else {
+        content.style.display = 'block';
+        arrow.classList.add('open');
+        const brand = document.getElementById("brandName").value || "[BRANDNAME]";
+        document.getElementById("docTitleOutput").textContent = `${brand}'s Privacy Policy and Messaging Terms and services`;
+      }
+    }
+
+    // Step 3 Functions
+    function showOptInDetails() {
+      const method = document.getElementById('optInMethod').value;
+      const details = document.getElementById('optInDetails');
+      const brand = document.getElementById("brandName").value || "[BRANDNAME]";
+      const msgType = document.getElementById("messageType").value || "[TYPEOFMESSAGE]";
+      const help = document.getElementById("helpKeyword").value || "[HELP]";
+      const optOut = document.getElementById("optOut").value || "[OPTOUT]";
+
+      if (method === "website") {
+        details.innerHTML = `
+          <strong>Website/Online opt-in:</strong><br>
+          If your website has a "CONTACT US" form or any form that collects a phone number, the following information would be required.
+          <br>This would apply also to store check out pages. Just include the information below at the bottom of the form.
+          <br><br>This would be the method of opt in you would want to proceed with and the following information would be required to be located at the bottom of the form(s):<br><br> 
+          <strong>The field for the phone number on the contact form must be optional and not required.</strong>
+          <em>
+          <br>
+          "[] By checking this box I consent to receive SMS text message to my cell number provided above for ${msgType} messages from ${brand} at the number provided. 
+           I understand that I can opt-out of receiving text messages at any time by responding with ${optOut}. I can reply with ${help} for help. Message frequency may vary. I understand that message and data rates may apply.
+          See ${brand} Terms of Service and Privacy Policy.</em>
+          <br><br>
+          When clicking on Terms of services and Privacy Policy links, the user should be redirected to the links appropriately.
+        `;
+        details.classList.remove('hidden');
+        document.getElementById('step3NextBtn').disabled = false;
+      } else if (method === "keyword") {
+        details.innerHTML = `
+          <strong>Keyword Opt-in:</strong><br>
+          <br>
+          If you are using a keyword to opt-in your customers, the following information would be required to be located on your website. Recommended on a Contact us Page that does NOT collect a phone number but just provides information on how customers can contact you:<br><br>
+          <em>
+          "By texting START to ${brand}, you consent to receive ${msgType} messages from ${brand}. Consent is not a condition of purchase. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying ${optOut}. Reply ${help} for help. Please view our Privacy Policy & Terms on our website."
+          </em>
+        `;
+        details.classList.remove('hidden');
+        document.getElementById('step3NextBtn').disabled = false;
+      } else if (method === "consumer") {
+        details.innerHTML = `
+          <strong>Consumer-Initiated Messaging:</strong><br><br>
+          If you are using consumer-initiated messaging, the following information would be required to be located on your website. Recommended on a Contact us Page that does NOT collect a phone number but just provides information on how customers can contact you:<br><br>
+          <em>
+          "By starting a text conversation with ${brand}, you are agreeing to receive conversational messages from ${brand}. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying STOP. Reply ${help} for help. Privacy Policy [Privacy Policy Link] & Terms [Terms Link]."
+          </em>
+        `;
+        details.classList.remove('hidden');
+        document.getElementById('step3NextBtn').disabled = false;
+      } else if (method === "verbal") {
+        details.innerHTML = `
+          <strong>Verbal opt-in:</strong><br>
+          This states that you will be collecting opt-in verbally from customers. 
+          The customers will be able to opt in to receive messages either in person at their physical location, or over a phone call if the customer calls. 
+          When a customer is registered for the first time, they are asked to provide the phone number, and staff is trained to ask if the customer would like to opt in to SMS-based billing notifications. They will be verbally informed that 'Message and data rates may apply', 'Message frequency may vary', and they can 'text ${help} for support or more information and STOP to unsubscribe at any time.' They will also be informed that their phone number will not be shared with third parties for marketing or promotional purposes.<br><br>
+          <strong>Verbal opt-in can not be used for marketing messages.</strong><br>
+        `;
+        details.classList.remove('hidden');
+        document.getElementById('step3NextBtn').disabled = false;
+      } else if (method === "document") {
+        details.innerHTML = `
+          <strong>Document opt-in:</strong><br>
+          <br>
+          This is for when you have a physical document that people sign to opt in to SMS service.<br><br>
+          The following information would be required on said document:<br><br>
+          <em>
+          "No mobile information will be shared with third parties/affiliates for marketing/promotional purposes. All the above categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties. Message frequency varies. Message and data rates may apply."<br><br>
+          "You agree to receive ${msgType} messages from ${brand}. Message frequency varies. Message and data rates may apply. For help, reply ${help}. You can opt out at any time by replying ${optOut}."<br><br>
+          [ ] By checking this box I consent to receive SMS text messages to my cell number provided above for ${msgType} messages from ${brand} at the number provided. 
+          I understand that I can opt-out of receiving text messages at any time by responding with ${optOut}. I can reply with ${help} for help. Message frequency may vary. I understand that message and data rates may apply.
+          See ${brand} Terms of Service and Privacy Policy.
+          </em>
+          <br>
+          <strong>Make sure to include a field for the phone number on the document that is optional.</strong>
+          <br>
+          <strong>Note: We will require a copy of said document for verification. Phone number must be optional.</strong>
+        `;
+        details.classList.remove('hidden');
+        document.getElementById('step3NextBtn').disabled = false;
+      } else {
+        details.classList.add('hidden');
+        document.getElementById('step3NextBtn').disabled = true;
+      }
+    }
+
+    // Step 4 Functions
+    function updateStep4Info() {
+      const brand = document.getElementById("brandName").value || "[BRANDNAME]";
+      const optIn = document.getElementById("optIn").value || "[OPTIN]";
+      const optOut = document.getElementById("optOut").value || "[OPTOUT]";
+      const help = document.getElementById("helpKeyword").value || "[HELP]";
+      const msgType = document.getElementById("messageType").value || "[TYPEOFMESSAGE]";
+      const privacyPolicyLink = document.getElementById("finalPolicyLink").value || "[Privacy Policy Link]";
+      const termsLink = document.getElementById("finalTermsLink").value || "[Terms of Service Link]";
+      const contactUsLink = document.getElementById("contactUsLink").value || "[Contact Us Link]";
+
+      // Update basic review
+      updateReviewBox();
+
+      // Update campaign summary
+      document.getElementById("campaignNameBox").innerText = brand;
+      document.getElementById("campaignDescBox").innerText = `${brand} will be contacting Opt-ed In clients in regards of ${msgType}.`;
+      document.getElementById("campaignMsgTypesBox").innerText = msgType;
+
+      document.getElementById("campaignOptInBox").innerText = optIn;
+      document.getElementById("campaignOptInMsgBox").innerText = 
+        `By texting ${optIn}, you consent to receive conversational messages from ${brand}. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying ${optOut}. For more information, reply ${help}. Privacy Policy: ${privacyPolicyLink}`;
+
+      document.getElementById("campaignOptOutBox").innerText = optOut;
+      document.getElementById("campaignOptOutMsgBox").innerText = 
+        `You have successfully opted out of SMS messages from ${brand}, and no further messages will be sent. You can, however, send ${optIn} to this number if you want to re-subscribe or reply ${help} for more information.`;
+
+      document.getElementById("campaignHelpBox").innerText = help;
+      document.getElementById("campaignHelpMsgBox").innerHTML = 
+        `Thanks for contacting ${brand}. We'll be in touch with you soon to help! Text ${optOut} to stop receiving messages from ${brand}. You can also text ${optIn} to restart getting messages.`;
+
+      // Show/hide summary section and enable submit button
+      const privacy = document.getElementById('finalPolicyLink').value.trim();
+      const terms = document.getElementById('finalTermsLink').value.trim();
+      const contact = document.getElementById('contactUsLink').value.trim();
+      
+      const section = document.getElementById('campaignSummarySection');
+      const submitBtn = document.getElementById('step4SubmitBtn');
+      
+      if (privacy && terms && contact) {
+        section.style.display = "block";
+        submitBtn.disabled = false;
+      } else {
+        section.style.display = "none";
+        submitBtn.disabled = true;
+      }
+    }
+
+    function updateReviewBox() {
+      const brand = document.getElementById("brandName").value || "[BRANDNAME]";
+      const optIn = document.getElementById("optIn").value || "[OPTIN]";
+      const optOut = document.getElementById("optOut").value || "[OPTOUT]";
+      const help = document.getElementById("helpKeyword").value || "[HELP]";
+      const msgType = document.getElementById("messageType").value || "[TYPEOFMESSAGE]";
+      const optInMethod = document.getElementById("optInMethod")?.value || "[Opt-in Method]";
+      const privacyPolicyLink = document.getElementById("finalPolicyLink").value || "[Privacy Policy Link]";
+      const termsLink = document.getElementById("finalTermsLink").value || "[Terms of Service Link]";
+      const contactUsLink = document.getElementById("contactUsLink").value || "[Contact Us Link]";
+      
+      let summary = `Review your SMS campaign setup:\n\n`;
+      summary += `Brand Name: ${brand}\n`;
+      summary += `Opt-in Keyword: ${optIn}\n`;
+      summary += `Opt-out Keyword: ${optOut}\n`;
+      summary += `Help Keyword: ${help}\n`;
+      summary += `Message Types: ${msgType}\n`;
+      summary += `Opt-in Method: ${optInMethod}\n`;
+      summary += `Privacy Policy Link: ${privacyPolicyLink}\n`;
+      summary += `Terms of Service Link: ${termsLink}\n`;
+      summary += `Contact Us Link: ${contactUsLink}\n`;
+      
+      document.getElementById("finalReviewBox").innerText = summary;
+    }
+
+    function showSummaryOptInOutput() {
+      const method = document.getElementById('summaryOptInMethod').value;
+      const output = document.getElementById('summaryOptInOutput');
+      const brand = document.getElementById("brandName").value || "[BRANDNAME]";
+      const optIn = document.getElementById("optIn").value || "[OPTIN]";
+      const optOut = document.getElementById("optOut").value || "[OPTOUT]";
+      const help = document.getElementById("helpKeyword").value || "[HELP]";
+      const msgType = document.getElementById("messageType").value || "[TYPEOFMESSAGE]";
+      const privacyPolicyLink = document.getElementById("finalPolicyLink").value || "[PRIVACY POLICY LINK]";
+      const termsLink = document.getElementById("finalTermsLink").value || "[TERMS OF SERVICE LINK]";
+      const contactUsLink = document.getElementById("contactUsLink").value || "[CONTACT US LINK]";
+      
+      if (method === "website") {
+        output.innerHTML = `Customers will fill out the form of: "${contactUsLink}"
+From there customers will have the option of selcting :By checking this box I consent to receive an SMS text message to my cell number provided above for ${msgType} from ${brand}. I understand that I can opt-out of receiving text messages at any time by responding with "${optOut}". I can reply with "${help}" to get help. Message frequency may vary. I understand that message and data rates may apply. See ${brand}'s Terms of Service and Privacy Policy.
+
+Privacy Policy Link: ${privacyPolicyLink}
+Terms of Service Link: ${termsLink}`;
+        output.classList.remove('hidden');
+      } else if (method === "keyword") {
+        output.innerHTML = `Customer's Are able to opt in to SMS to ${brand} by texting ${optIn} at our number which can be found here [${contactUsLink}]. On that page The following verbiage is provided: "By starting a texting ${optIn} with ${brand}, you are agreeing to ${msgType} from ${brand}. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying ${optOut}. Reply ${help} for help. Privacy Policy link & Terms link
+
+Privacy Policy Link: ${privacyPolicyLink}
+Terms of Service Link: ${termsLink}`;
+        output.classList.remove('hidden');
+      } else if (method === "initiated") {
+        output.innerHTML = `Customer's Are able to opt in to SMS to ${brand} by texting us at our number which can be Found here [${contactUsLink}]. On that page The following verbiage is provided: "By starting a text conversation with ${brand}, you are agreeing to ${msgType} from ${brand}. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying ${optOut} . Reply ${help} for help. Privacy Policy [link] & Terms [link]
+
+Privacy Policy Link: ${privacyPolicyLink}
+Terms of Service Link: ${termsLink}`;
+        output.classList.remove('hidden');
+      } else if (method === "verbal") {
+        output.innerHTML = `*${brand}* will be collecting opt-in verbally from their customers. The customers will be able to opt in to receive messages either in person at their physical location, or over a phone call if the customer calls. When a customer is registered for the first time, they are asked to provide the phone number, and staff is trained to ask If the customer would like to opt in to SMS-based billing notifications. They will be verbally informed that "Message and data rates may apply", "Message frequency may vary", and they can "text [${help}] for support or more information and [${optOut}] to unsubscribe at any time." They will also be informed that their phone number will not be shared with third parties for marketing or promotional purposes. 
+
+Privacy Policy Link: ${privacyPolicyLink}
+Terms of Service Link: ${termsLink}`;
+        output.classList.remove('hidden');
+      } else if (method === "document") {
+        output.innerHTML = `Customers will be provided ( PLEASE PROVIDE DOCUMENTATION LINK), In which they will provided the following information and are able to opt in by the checking the following verbaige:
+"[]By checking this box I consent to receive an SMS text message to my cell number provided above for ${msgType} from ${brand}. I understand that I can opt-out of receiving text messages at any time by responding with "${optOut}". I can reply with "${help}" to get help. Message frequency may vary. I understand that message and data rates may apply. See ${brand}'s Terms of Service and Privacy Policy.
+
+Privacy Policy Link: ${privacyPolicyLink}
+Terms of Service Link: ${termsLink}`;
+        output.classList.remove('hidden');
+      } else {
+        output.classList.add('hidden');
+      }
+    }
+
+    function submitCampaign() {
+      alert("Your SMS campaign Is almost complete please continue on the SMS registration form to complete the process!");
+    }
+
+    // Initialize form when page loads
+    window.onload = function() {
+      validateStep1();
+      updateOutput();
+      validateStep2();
+    };
+  </script>
+</body>
+</html>
