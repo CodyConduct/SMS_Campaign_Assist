@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SMS Campaign Assistance Form</title>
+  <style>
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 20px;
+    }
+    .form-container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+      border: 3px solid #3FAD2A;
+      border-radius: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #3FAD2A;
+    }
+    .question-block, .statement {
+      margin-bottom: 20px;
+    }
+    .question-block label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .info-icon {
+      display: inline-block;
+      background-color: #3FAD2A;
+      color: white;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      cursor: pointer;
+      margin-left: 8px;
+      position: relative;
+    }
+    .info-icon:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      background-color: #333;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 5px;
+      top: 30px;
+      left: 0;
+      width: 300px;
+      z-index: 100;
+      font-size: 13px;
+    }
+    .output-box {
+      background: #f9f9f9;
+      padding: 15px;
+      border-left: 5px solid #3FAD2A;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.1em;
+      white-space: pre-line;
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .btn-next, .btn-back {
+      padding: 10px 20px;
+      margin: 10px 10px 0 0;
+      background-color: #3FAD2A;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-next:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .btn-back {
+      background-color: #777;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .toggle-button {
+      padding: 10px 20px;
+      font-size: 1.0em;
+      border-radius: 8px;
+      background-color: #3FAD2A;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .toggle-content {
+      background: #e8f5e9; 
+      border: 1px solid #3FAD2A;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 10px;
+    }    
+    hr {
+      border: none;
+      border-top: 4px solid #3FAD2A;
+      margin: 32px auto;
+      width: 80%;
+      box-shadow: 0 2px 8px rgba(63,173,42,0.15);
+      display: block;
+    }
+    .arrow {
+      margin-left: 10px;
+      transition: transform 0.3s;
+    }
+    .arrow.open {
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>SMS Campaign Assistance Form</h2>
+    <!-- STEP 1 -->
+    <div class="section" id="step1">
+	  <p id="infopane"> This should show the data values</p>
+      <div class="statement">Let's review your brand and website setup:</div>
+      <div class="question-block">
+        <label>Q: Do you have at least 1 Plus / Pro user on the account?</label>
+        <select id="hasPlus" onChange="validateStep1()">
+          <option value="">-- Select --</option>
+          <option value="yes">Yes</option>
+          <option value="no">No / Unsure</option>
+        </select>
+        <div id="plusResponse" class="statement hidden">
+          This can be checked by logging in to 
+          <a href="https://my.phone.com/" target="_blank" rel="noopener noreferrer">https://my.phone.com/</a>
+          and navigating to the "Admin" section and navigating to the "Users" tab.<br><br>
+          If you do not have a "users" tab on your page, you are more than likely on a Grandfathered plan and may proceed to the next Question and mark this question as Yes.<br><br>
+          If you do have the "User" tab, you will be able to see your plan to the right of your name. If your plan is on Base, we recommend upgrading at least 1 user to Plus or Pro to proceed with the campaign form, as you will not have access to the Outbound SMS functionality.<br><br>
+          Please view pricing and plans here:
+          <a href="https://www.phone.com/pricing/" target="_blank" rel="noopener noreferrer">https://www.phone.com/pricing/</a>
+        </div>
+      </div>
+      <div class="question-block">
+        <label>Q: Has your brand been approved?</label>
+        <select id="brandApproved" onChange="validateStep1()">
+          <option value="">-- Select --</option>
+          <option value="yes">Yes</option>
+          <option value="no">No / Unsure</option>
+        </select>
+        <div class="statement hidden" id="brandExplain">
+          This can be checked by logging in to 
+          <a href="https://my.phone.com/" target="_blank" rel="noopener noreferrer">https://my.phone.com/</a>
+          and navigating to the "Admin" section then SMS Registration.<br><br>
+          If you do not have a brand you can Click "+Add new brand" and fill the brand form. 
+          <strong>Federal business ID (EIN for US, Business # for CA) will be required at the time of filling this form.</strong><br><br>
+          For more information on how to create a brand, please refer to the
+          <a href="https://support.phone.com/text-messaging-registration-field-by-field-guide#campaign" target="_blank" rel="noopener noreferrer">Field by Field Guide</a>.
+        </div>
+      </div>
+      <div class="question-block">
+        <label>
+          Q: Does your brand have a website / Web Presence attached?
+          <span class="info-icon" data-tooltip="What is online presence? This can be a Facebook, LinkedIn page, or a site that is connected to your company.">i</span>
+        </label>
+        <select id="hasWebsite" onChange="validateStep1()">
+          <option value="">-- Select --</option>
+          <option value="yes">Yes</option>
+          <option value="no">No / Unsure</option>
+        </select>
+        <div class="statement hidden" id="noWebsiteSupport">
+          This can be checked by logging in to <a href="https://my.phone.com/" target="_blank" rel="noopener noreferrer">https://my.phone.com/</a> and navigating to the "Admin" section then SMS Registration.<br><br>
+          Click the 3 Dots to the right of the brand and select "EDIT BRAND". If your website is not appearing on the form, contact support at 1.800.998.7087 to update your brand.<br>
+        </div>
+      </div>
+      <div id="errorMsg" class="error hidden">⚠ Please ensure all requirements are met before proceeding. You cannot continue until all answers are "Yes".</div>
+      <button class="btn-next" id="step1NextBtn" onclick="goToStep2()" disabled>Next →</button>
+	</div>
+  </div>
+  <script src="./SMS_Campaign.js"></script>
+</body>
+</html>
