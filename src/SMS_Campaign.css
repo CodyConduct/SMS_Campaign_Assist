@@ -1,0 +1,140 @@
+body {
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 20px;
+}
+
+.form-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px;
+  border: 3px solid #3FAD2A;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #3FAD2A;
+}
+
+.question-block, .statement {
+  margin-bottom: 20px;
+}
+
+.question-block label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6px;
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.info-icon {
+  display: inline-block;
+  background-color: #3FAD2A;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-left: 8px;
+  position: relative;
+}
+
+.info-icon:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  top: 30px;
+  left: 0;
+  width: 300px;
+  z-index: 100;
+  font-size: 13px;
+}
+
+.output-box {
+  background: #f9f9f9;
+  padding: 15px;
+  border-left: 5px solid #3FAD2A;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 1.1em;
+  white-space: pre-line;
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-next, .btn-back {
+  padding: 10px 20px;
+  margin: 10px 10px 0 0;
+  background-color: #3FAD2A;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-next:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-back {
+  background-color: #777;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.toggle-button {
+  padding: 10px 20px;
+  font-size: 1.0em;
+  border-radius: 8px;
+  background-color: #3FAD2A;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.toggle-content {
+  background: #e8f5e9; 
+  border: 1px solid #3FAD2A;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 10px;
+}    
+
+hr {
+  border: none;
+  border-top: 4px solid #3FAD2A;
+  margin: 32px auto;
+  width: 80%;
+  box-shadow: 0 2px 8px rgba(63,173,42,0.15);
+  display: block;
+}
+
+.arrow {
+  margin-left: 10px;
+  transition: transform 0.3s;
+}
+
+.arrow.open {
+  transform: rotate(90deg);
+}

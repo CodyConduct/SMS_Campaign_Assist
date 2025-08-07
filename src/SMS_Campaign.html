@@ -2,139 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="SMS_Campaign.css">
   <title>SMS Campaign Assistance Form</title>
-  <style>
-    body {
-      font-family: 'Montserrat', Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 20px;
-    }
-    .form-container {
-      max-width: 900px;
-      margin: auto;
-      padding: 30px;
-      border: 3px solid #3FAD2A;
-      border-radius: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      color: #3FAD2A;
-    }
-    .question-block, .statement {
-      margin-bottom: 20px;
-    }
-    .question-block label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 6px;
-    }
-    input[type="text"], select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    .info-icon {
-      display: inline-block;
-      background-color: #3FAD2A;
-      color: white;
-      font-weight: bold;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      text-align: center;
-      cursor: pointer;
-      margin-left: 8px;
-      position: relative;
-    }
-    .info-icon:hover::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      background-color: #333;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 5px;
-      top: 30px;
-      left: 0;
-      width: 300px;
-      z-index: 100;
-      font-size: 13px;
-    }
-    .output-box {
-      background: #f9f9f9;
-      padding: 15px;
-      border-left: 5px solid #3FAD2A;
-      font-family: 'Montserrat', Arial, sans-serif;
-      font-size: 1.1em;
-      white-space: pre-line;
-      margin-top: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-    .btn-next, .btn-back {
-      padding: 10px 20px;
-      margin: 10px 10px 0 0;
-      background-color: #3FAD2A;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .btn-next:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    .btn-back {
-      background-color: #777;
-    }
-    .error {
-      color: red;
-      font-weight: bold;
-    }
-    .toggle-button {
-      padding: 10px 20px;
-      font-size: 1.0em;
-      border-radius: 8px;
-      background-color: #3FAD2A;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    .toggle-content {
-      background: #e8f5e9; 
-      border: 1px solid #3FAD2A;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 10px;
-    }    
-    hr {
-      border: none;
-      border-top: 4px solid #3FAD2A;
-      margin: 32px auto;
-      width: 80%;
-      box-shadow: 0 2px 8px rgba(63,173,42,0.15);
-      display: block;
-    }
-    .arrow {
-      margin-left: 10px;
-      transition: transform 0.3s;
-    }
-    .arrow.open {
-      transform: rotate(90deg);
-    }
-  </style>
 </head>
 <body>
 
   <div class="form-container">
     <h2>SMS Campaign Assistance Form</h2>
+	
     <!-- STEP 1 -->
     <div class="section" id="step1">
-	  <p id="infopane"> This should show the data values</p>
       <div class="statement">Let's review your brand and website setup:</div>
       <div class="question-block">
         <label>Q: Do you have at least 1 Plus / Pro user on the account?</label>
@@ -186,9 +63,135 @@
         </div>
       </div>
       <div id="errorMsg" class="error hidden">⚠ Please ensure all requirements are met before proceeding. You cannot continue until all answers are "Yes".</div>
-      <button class="btn-next" id="step1NextBtn" onclick="goToStep2()" disabled>Next →</button>
+      <button class="btn-next" id="step1NextBtn" onclick="nextStep()" disabled>Next →</button>
 	</div>
   </div>
+  
+    <!-- STEP 2 -->
+    <div class="section hidden" id="step2">
+      <div class="statement">
+        Let's generate your Privacy Policy and Terms of Service with the required keywords.
+      </div>
+      <div class="question-block">
+        <label>Q: What is your Brand Name?
+          <span class="info-icon" data-tooltip="Use the same Brand name matching what is provided on your Brand form">i</span>
+        </label>
+        <input type="text" id="brandName" oninput="setBrandName(); validateStep2();" required>
+      </div>
+      <div class="question-block">
+        <label>Q: What is your OPT-IN Keyword?
+          <span class="info-icon" data-tooltip="These are the words a contact can text to opt-in. Industry standards are START or SUBSCRIBE.">i</span>
+        </label>
+        <input type="text" id="optIn" oninput="this.value = this.value.toUpperCase(); setOptIn(); validateStep2();" required>
+      </div>
+      <div class="question-block">
+        <label>Q: What is your OPT-OUT Keyword?
+          <span class="info-icon" data-tooltip="Words a contact can text to opt-out. Industry standards are: STOP, CANCEL, UNSUBSCRIBE.">i</span>
+        </label>
+        <input type="text" id="optOut" oninput="this.value = this.value.toUpperCase(); setOptOut(); validateStep2();" required>
+      </div>
+      <div class="question-block">
+        <label>Q: What is your HELP Keyword?
+          <span class="info-icon" data-tooltip="Words a contact can text to get help, like HELP or INFO.">i</span>
+        </label>
+        <input type="text" id="helpKeyword" oninput="this.value = this.value.toUpperCase(); setHelpKeyword(); validateStep2();" required>
+      </div>
+      <div class="question-block">
+        <label>Q: What type of messages will you send?
+          <span class="info-icon" data-tooltip="E.g., Marketing, Account Notifications, Conversational / Customer Care.">i</span>
+        </label>
+        <div class="options" id="messageTypeOptions">      
+          <label><input type="checkbox" value="Marketing" onchange="setMessageBoxes(); validateStep2();"> Marketing</label>
+          <label><input type="checkbox" value="AcctNotif" onchange="setMessageBoxes(); validateStep2();"> Account Notifications</label>
+          <label><input type="checkbox" value="ConverseCare" onchange="setMessageBoxes(); validateStep2();"> Conversational / Customer Care</label>
+        </div>
+        <div class="output-box" id="messageTypesOutput" style="margin-top:8px;">
+          Types of messages you will send:
+        </div>
+        <input type="text" id="messageType" class="hidden" required>
+      </div>
+      
+      <div class="statement">Generated Privacy Policy and Messaging Terms and services:</div>
+      <div class="output-box" id="policyOutput"></div>
+      
+      <div class="toggle-container">
+        <br>
+        <button class="toggle-button" onclick="toggleMessages()">
+          <span style="font-size: 1.1em; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 600;">
+            Unsure what kind of messages you are going to send?
+          </span>
+          <span id="arrow" class="arrow">&#9654;</span>
+        </button>
+      </div>
+      <div id="messageInfo" class="toggle-content" style="display:none;">
+        <div class="message-example">
+          <strong>Conversational messages / Customer Care:</strong>
+          <div class="message-text">
+            <br>
+            ***Conversational / Customer Care messages are two-way interactions where you and your customers can exchange information freely. These messages are not strictly promotional or transactional.***<br><br>
+            <i><strong>Example:</strong></i> <br><br>
+            Hi, this is Bob from Bob's Pools,<br>
+            Just wanted to follow up with you in regards of services that we have performed a few weeks ago. Let us know if you have any questions or need further assistance.<br>
+            Let us know if you need anything else.
+            To unsubscribe from text messages, reply with STOP. <br><br>
+          </div>
+          <strong>Account notifications:</strong>
+          <div class="message-text">
+            <br>
+            Hi, Fred. Just wanted to update you regarding [Insert issue] — information has been updated to your account.<br>
+            To unsubscribe from text messages, reply with STOP.<br><br>
+          </div>
+          <strong>Marketing:</strong>
+          <div class="message-text">
+            <br>
+            Great news from Beautify Salon! We are offering 20% off highlights for the next 30 days.<br>
+            Text "APPT", and we'll contact you to set your appointment.<br>
+            To unsubscribe from text messages, reply with STOP.<br><br>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <button class="toggle-button" type="button" onclick="toggleNoWebsiteInstructions()">
+          <strong>Don't have a website but have an online presence (Company Facebook/LinkedIn) instead?</strong>
+          <span id="noWebsiteArrow" class="arrow">&#9654;</span>
+        </button>
+        <div id="noWebsiteInstructions" class="toggle-content" style="display:none;">
+          <ol>
+            <li>
+              You will need a way to make a document accessible but not editable to the public. 
+              <strong>Google Docs</strong> is a common method for this.
+            </li>
+            <br>
+            <li>
+              Copy the <strong>Generated Privacy Policy and Messaging Terms and services</strong> above into the document and title it:<br>
+              <code id="docTitleOutput"></code>
+            </li>
+            <br>
+            <li>
+              Make sure to set the sharing settings to "Anyone with the link can view".
+            </li>
+            <br>
+            <li>
+              Apply the new document link to your online web presence (e.g., Facebook/LinkedIn page) so it is accessible to the public.
+            </li>
+          </ol>
+          <em>Make sure to set the sharing settings to "Anyone with the link can view".</em>
+          <br>
+        </div>
+        <br>
+        <label>
+          <input type="checkbox" id="policyCopy" onchange="setPolicyCopy(); validateStep2();" style="margin-right: 10px;">
+          I have copied or added the generated Privacy Policy and Terms of Service to my website / Public document.
+        </label>
+        <br><strong>Link to Privacy policy and terms of services will be required later</strong>
+      </div>
+      
+      <button class="btn-back" onclick="previousStep()">← Back</button>
+      <button class="btn-next" id="step2NextBtn" onclick="nextStep()" disabled>Next →</button>
+      <div id="step2ErrorMsg" class="error hidden">⚠ Please fill out all required fields and select at least one message type to continue.</div>
+    </div>
+  
   <script src="./SMS_Campaign.js"></script>
 </body>
 </html>
