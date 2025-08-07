@@ -76,25 +76,25 @@
         <label>Q: What is your Brand Name?
           <span class="info-icon" data-tooltip="Use the same Brand name matching what is provided on your Brand form">i</span>
         </label>
-        <input type="text" id="brandName" oninput="setBrandName(); validateStep2();" required>
+        <input type="text" id="brandName" oninput="validateStep2()" required>
       </div>
       <div class="question-block">
         <label>Q: What is your OPT-IN Keyword?
           <span class="info-icon" data-tooltip="These are the words a contact can text to opt-in. Industry standards are START or SUBSCRIBE.">i</span>
         </label>
-        <input type="text" id="optIn" oninput="this.value = this.value.toUpperCase(); setOptIn(); validateStep2();" required>
+        <input type="text" id="optIn" oninput="this.value = this.value.toUpperCase(); validateStep2();" required>
       </div>
       <div class="question-block">
         <label>Q: What is your OPT-OUT Keyword?
           <span class="info-icon" data-tooltip="Words a contact can text to opt-out. Industry standards are: STOP, CANCEL, UNSUBSCRIBE.">i</span>
         </label>
-        <input type="text" id="optOut" oninput="this.value = this.value.toUpperCase(); setOptOut(); validateStep2();" required>
+        <input type="text" id="optOut" oninput="this.value = this.value.toUpperCase(); validateStep2();" required>
       </div>
       <div class="question-block">
         <label>Q: What is your HELP Keyword?
           <span class="info-icon" data-tooltip="Words a contact can text to get help, like HELP or INFO.">i</span>
         </label>
-        <input type="text" id="helpKeyword" oninput="this.value = this.value.toUpperCase(); setHelpKeyword(); validateStep2();" required>
+        <input type="text" id="helpKeyword" oninput="this.value = this.value.toUpperCase(); validateStep2();" required>
       </div>
       <div class="question-block">
         <label>Q: What type of messages will you send?
@@ -181,7 +181,7 @@
         </div>
         <br>
         <label>
-          <input type="checkbox" id="policyCopy" onchange="setPolicyCopy(); validateStep2();" style="margin-right: 10px;">
+          <input type="checkbox" id="policyCopy" onchange="validateStep2()" style="margin-right: 10px;">
           I have copied or added the generated Privacy Policy and Terms of Service to my website / Public document.
         </label>
         <br><strong>Link to Privacy policy and terms of services will be required later</strong>

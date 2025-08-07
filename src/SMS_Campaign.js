@@ -111,7 +111,13 @@ function setMessageBoxes() {
 }
 
 function validateStep2() {
-//    console.log("Entered Validate Step 2");
+    setBrandName();
+    setOptIn();
+    setOptOut();
+    setHelpKeyword();
+    setPolicyCopy();
+    setMessageBoxes();
+
     var validity_check = true;
 
     if( brand_name   === "" ||
@@ -142,7 +148,6 @@ function validateStep2() {
         document.getElementById('step2NextBtn').disabled = true; 
         document.getElementById('step2ErrorMsg').classList.remove('hidden'); 
     }
-//    console.log("End of Validate Step 2");
 }
 
 
