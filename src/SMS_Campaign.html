@@ -101,9 +101,9 @@
           <span class="info-icon" data-tooltip="E.g., Marketing, Account Notifications, Conversational / Customer Care.">i</span>
         </label>
         <div class="options" id="messageTypeOptions">      
-          <label><input type="checkbox" value="Marketing" onchange="setMessageBoxes(); validateStep2();"> Marketing</label>
-          <label><input type="checkbox" value="AcctNotif" onchange="setMessageBoxes(); validateStep2();"> Account Notifications</label>
-          <label><input type="checkbox" value="ConverseCare" onchange="setMessageBoxes(); validateStep2();"> Conversational / Customer Care</label>
+          <label><input type="checkbox" value="Marketing" onchange="validateStep2()"> Marketing</label>
+          <label><input type="checkbox" value="AcctNotif" onchange="validateStep2()"> Account Notifications</label>
+          <label><input type="checkbox" value="ConverseCare" onchange="validateStep2()"> Conversational / Customer Care</label>
         </div>
         <div class="output-box" id="messageTypesOutput" style="margin-top:8px;">
           Types of messages you will send:
@@ -116,11 +116,11 @@
       
       <div class="toggle-container">
         <br>
-        <button class="toggle-button" onclick="toggleMessages()">
+        <button class="toggle-button" onclick="toggleMessageTypeHelp()">
           <span style="font-size: 1.1em; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 600;">
             Unsure what kind of messages you are going to send?
           </span>
-          <span id="arrow" class="arrow">&#9654;</span>
+          <span id="messageTypeArrow" class="arrow">&#9654;</span>
         </button>
       </div>
       <div id="messageInfo" class="toggle-content" style="display:none;">
@@ -152,7 +152,7 @@
       </div>
       
       <div style="margin: 20px 0;">
-        <button class="toggle-button" type="button" onclick="toggleNoWebsiteInstructions()">
+        <button class="toggle-button" type="button" onclick="toggleNoWebsiteHelp()">
           <strong>Don't have a website but have an online presence (Company Facebook/LinkedIn) instead?</strong>
           <span id="noWebsiteArrow" class="arrow">&#9654;</span>
         </button>
@@ -190,6 +190,31 @@
       <button class="btn-back" onclick="previousStep()">← Back</button>
       <button class="btn-next" id="step2NextBtn" onclick="nextStep()" disabled>Next →</button>
       <div id="step2ErrorMsg" class="error hidden">⚠ Please fill out all required fields and select at least one message type to continue.</div>
+    </div>
+  
+    <!-- STEP 3 -->
+    <div class="section hidden" id="step3">
+      <div class="statement">
+        Here we will be determining the method of opt in. Depending on which opt in method is selected may result in additional changes to your website and proper information will be provided.<br>
+        <br>
+        Here are the most common methods of opt-in:
+        <br><br><strong>Please look through the options and see what applies closest to your needs. 
+        Please make sure the appropriate updates are made before proceeding.</strong>
+      </div>
+      <div class="question-block">
+        <label for="optInMethod"><strong>Different types of opt-in method:</strong></label>
+        <select id="optInMethod" onchange="validateStep3()">
+          <option value="">-- Select --</option>
+          <option value="website">Website/Online opt-in</option>
+          <option value="keyword">Keyword Opt-in</option>
+          <option value="consumer">Consumer-Initiated Messaging</option>
+          <option value="verbal">Verbal opt-in</option>
+          <option value="document">Document opt-in</option>
+        </select>
+      </div>
+      <div id="optInDetails" class="output-box hidden"></div>
+      <button class="btn-back" onclick="previousStep()">← Back</button>
+      <button class="btn-next" id="step3NextBtn" onclick="nextStep()" disabled>Next →</button>
     </div>
   
   <script src="./SMS_Campaign.js"></script>
