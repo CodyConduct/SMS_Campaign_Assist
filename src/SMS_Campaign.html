@@ -217,6 +217,107 @@
       <button class="btn-next" id="step3NextBtn" onclick="nextStep()" disabled>Next →</button>
     </div>
   
+    <!-- STEP 4 -->
+    <div class="section hidden" id="step4">
+      <div class="statement">
+        <strong>Step 4: Final Review & Submission</strong><br>
+        Please review all your information and confirm everything is correct before submitting your SMS campaign request.
+      </div>
+      <div class="question-block">
+        <label>Q: Please provide the link to your Privacy Policy</label>
+        <input type="text" id="privacyLink" placeholder="https://yourwebsite.com/privacy-policy" oninput="validateStep4()" style="margin-bottom:10px;">
+      </div>
+      <div class="question-block">
+        <label>Q: Please provide the link to your Terms of Service</label>
+        <input type="text" id="termsLink" placeholder="https://yourwebsite.com/terms-of-service" oninput="validateStep4()" style="margin-bottom:10px;">
+      </div>
+      <div class="question-block">
+        <label>Q: What is your Link to your Contact us page</label>
+        <input type="text" id="contactLink" placeholder="https://yourwebsite.com/contact" oninput="validateStep4()" style="margin-bottom:10px;">
+      </div>
+      
+      <div class="output-box" id="finalReviewBox">
+        Please fill in the fields above for the generation of your SMS campaign summary.<br>
+      </div>
+
+      <div id="reviewSummarySection" style="display: none;">
+        <hr>
+        <div class="statement" style="text-align:center; font-size:1.25em;"><strong>Section 1: How are you using SMS?</strong></div>
+        <div class="question-block">
+          <label>Campaign Name:</label>
+          <div class="output-box" id="reviewNameBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Campaign Description:</label>
+          <div class="output-box" id="reviewDescBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Please select message types on the right. If other use cases apply, select those options as well.
+            <br>Note: these options are for OUTBOUND SMS.</label>
+          <div class="output-box" id="reviewMsgTypesBox"></div>
+        </div>
+        <div style="text-align: center; font-weight: bold; margin: 16px 0;">
+          Once this section is complete, hit Next on the bottom right to continue.
+        </div>
+        <hr>
+        <div class="statement" style="text-align:center; font-size:1.25em;"><strong>Section 2: Message Settings</strong></div>
+        <div class="question-block">
+          <label>Opt-in keyword(s):</label>
+          <div class="output-box" id="reviewOptInBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Opt-in message:</label>
+          <div class="output-box" id="reviewOptInMsgBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Opt-out keyword(s):</label>
+          <div class="output-box" id="reviewOptOutBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Opt-out message:</label>
+          <div class="output-box" id="reviewOptOutMsgBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Help keyword:</label>
+          <div class="output-box" id="reviewHelpBox"></div>
+        </div>
+        <div class="question-block">
+          <label>Help message:</label>
+          <div class="output-box" id="reviewHelpMsgBox"></div>
+        </div>
+        <hr>
+        <div class="question-block">
+          <label for="summaryOptInMethod"><strong>Choose Opt-in Method (for Message Flow):</strong></label>
+          <select id="reviewOptInMethod" onchange="showSummaryOptInOutput()">
+            <option value="">-- Select --</option>
+            <option value="website">Website/Online opt-in</option>
+            <option value="keyword">Keyword Opt-in</option>
+            <option value="initiated">Initiated Messaging</option>
+            <option value="verbal">Verbal opt-in</option>
+            <option value="document">Document opt-in</option>
+          </select>
+        </div>
+        <div class="output-box" id="reviewOptInMsgBox"></div>
+        <hr>
+        <div class="statement" style="text-align:center; font-size:1.25em;"><strong>Section 4: Sample Messages</strong></div>
+        <div class="question-block">
+          <label><strong>Select the type(s) of messages you are going to send 
+            <br> Note: Please update the wording to reflect the type of messages you are going to send:</strong></label>
+          <div id="reviewMessageTypeOptions">
+            <label><input type="checkbox" id="reviewCheckboxMarketing" value="Marketing" onchange="step4MessageTypes()"> Marketing</label>
+            <label><input type="checkbox" id="reviewCheckboxAcct" value="AcctNotif" onchange="step4MessageTypes()"> Account Notifications</label>
+            <label><input type="checkbox" id="reviewCheckboxConv" value="ConverseCare" onchange="step4MessageTypes()"> Conversational / Customer Care</label>
+          </div>
+        </div>
+        <div class="question-block">
+          <label><strong>Sample Message(s) Based on Your Selection:</strong></label>
+          <div class="output-box" id="reviewSampleMsgBox"></div>
+        </div>
+      </div>
+      <button class="btn-back" onclick="previousStep()">← Back</button>
+      <button class="btn-next" id="step4SubmitBtn" onclick="submitCampaign()" disabled>DONE!</button>
+    </div>	 
+	
   <script src="./SMS_Campaign.js"></script>
 </body>
 </html>
